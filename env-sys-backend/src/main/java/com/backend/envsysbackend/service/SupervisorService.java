@@ -1,4 +1,7 @@
 package com.backend.envsysbackend.service;
 
-public interface SupervisorService {
+import com.backend.envsysbackend.entity.Supervisor;
+import com.baomidou.mybatisplus.spring.service.IService;
+
+public interface SupervisorService extends IService<Supervisor> {
 }

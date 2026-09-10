@@ -1,4 +1,7 @@
 package com.backend.envsysbackend.service;
 
-public interface Grid_memberService {
+import com.backend.envsysbackend.entity.Grid_member;
+import com.baomidou.mybatisplus.spring.service.IService;
+
+public interface Grid_memberService extends IService<Grid_member> {
 }

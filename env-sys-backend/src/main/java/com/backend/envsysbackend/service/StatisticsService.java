@@ -1,4 +1,7 @@
 package com.backend.envsysbackend.service;
 
-public interface StatisticsService {
+import com.backend.envsysbackend.entity.Statistics;
+import com.baomidou.mybatisplus.spring.service.IService;
+
+public interface StatisticsService extends IService<Statistics> {
 }

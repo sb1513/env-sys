@@ -1,4 +1,7 @@
 package com.backend.envsysbackend.service;
 
-public interface AqiService {
+import com.backend.envsysbackend.entity.Aqi;
+import com.baomidou.mybatisplus.spring.service.IService;
+
+public interface AqiService extends IService<Aqi> {
 }
