@@ -1,0 +1,83 @@
+package com.backend.envsysbackend.web.grid;
+
+import com.backend.envsysbackend.entity.Grid_city;
+import com.backend.envsysbackend.entity.Grid_member;
+import com.backend.envsysbackend.entity.Grid_province;
+import com.backend.envsysbackend.entity.Supervisor;
+import com.backend.envsysbackend.service.Grid_cityService;
+import com.backend.envsysbackend.service.Grid_memberService;
+import com.backend.envsysbackend.service.Grid_provinceService;
+import com.backend.envsysbackend.service.SupervisorService;
+import com.backend.envsysbackend.util.JWTutil;
+import com.backend.envsysbackend.web.R;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/grid")
+@CrossOrigin(origins = "http://localhost:5173")
+public class GridController {
+    @Autowired
+    private JWTutil jwtutil;
+
+    @Autowired
+    private Grid_memberService grid_memberService;
+    @Autowired
+    private Grid_provinceService grid_provinceService;
+    @Autowired
+    private Grid_cityService grid_cityService;
+
+    @PostMapping("/login")
+    public R login(@RequestBody Map<String,Object> map){
+        QueryWrapper<Grid_member> qw = new QueryWrapper<>();
+        qw.eq("gm_code",map.get("userName"));
+        qw.eq("password",map.get("password"));
+        Grid_member gm = grid_memberService.getOne(qw);
+        if(gm!=null){
+            Map<String,Object> map1 = new HashMap<>();
+            String jwt = jwtutil.generateToken(Map.of("user_id",gm.getGmId(),"nickName",gm.getGmName(),"role","grid"));
+            map1.put("id",gm.getGmId());
+            map1.put("userName",gm.getGmName());
+            return new R(2000,"登录成功!",Map.of("user",map1,"token",jwt));
+        }
+        else{
+            return new R(4001,"用户名或密码错误",null);
+        }
+    }
+
+    @PostMapping("/register")
+    public R register(@RequestBody Grid_member grid_member){
+        try{
+            grid_memberService.save(grid_member);
+            return new R (2000, "注册成功",null);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new R (5001, "注册失败，该用户名已注册",null);
+        }
+    }
+
+    @GetMapping("/province/list")
+    public R provinceList() {
+
+        List<Grid_province> list = grid_provinceService.list();
+
+        return new R(2000, "获取成功", list);
+    }
+
+    @GetMapping("/city/list/{provinceId}")
+    public R cityList(@PathVariable Integer provinceId) {
+
+        QueryWrapper<Grid_city> qw = new QueryWrapper<>();
+
+        qw.eq("province_id", provinceId);
+
+        List<Grid_city> list = grid_cityService.list(qw);
+
+        return new R(2000, "获取成功", list);
+    }
+}
