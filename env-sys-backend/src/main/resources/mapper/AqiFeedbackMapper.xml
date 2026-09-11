@@ -33,6 +33,10 @@
         <!-- 公众监督员姓名 -->
         <result column="real_name" property="realName"/>
 
+        <!-- 网格员的姓名,手机号 -->
+        <result column="gm_name" property="gmName"/>
+        <result column="tel" property="gmTel"/>
+
     </resultMap>
 
 
@@ -41,7 +45,9 @@
             af.*,
             gp.province_name,
             gc.city_name,
-            s.real_name
+            s.real_name,
+            gm.gm_name,
+            gm.tel
         FROM aqi_feedback af
 
                  LEFT JOIN grid_province gp
@@ -52,6 +58,9 @@
 
                  LEFT JOIN supervisor s
                            ON af.tel_id = s.tel_id
+
+                 LEFT JOIN grid_member gm
+                           ON af.gm_id = gm.gm_id
     </sql>
 
 

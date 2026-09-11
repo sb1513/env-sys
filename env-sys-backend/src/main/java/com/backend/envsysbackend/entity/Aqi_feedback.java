@@ -66,6 +66,24 @@ public class Aqi_feedback {
     public void setRealName(String realName) {
         this.realName = realName;
     }
+    private String gmName;
+
+    public String getGmName() {
+        return gmName;
+    }
+
+    public void setGmName(String gmName) {
+        this.gmName = gmName;
+    }
+    private String gmTel;
+
+    public String getGmTel() {
+        return gmTel;
+    }
+
+    public void setGmTel(String gmTel) {
+        this.gmTel = gmTel;
+    }
 
     public int getAfId() {
         return afId;

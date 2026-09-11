@@ -70,7 +70,7 @@ public class AdminController {
             qw.eq("estimated_grade",grade);
         }
         if(state!=null){
-            qw.eq("state",state);
+            qw.eq("af.state",state);
         }
         aqi_feedbackService.page(pg,qw);
         return new R (2000, "获取成功", pg);

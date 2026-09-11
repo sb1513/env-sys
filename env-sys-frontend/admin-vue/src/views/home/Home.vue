@@ -83,13 +83,13 @@ const selectMenu = (menu) => {
               公众监督数据列表
             </RouterLink>
 
-            <div
+            <RouterLink :to="{name:'ConfirmAqiPage-index'}"
               class="menu-item"
               :class="{ active: activeMenu === 'confirm' }"
               @click="selectMenu('confirm')"
             >
               确认AQI数据列表
-            </div>
+            </RouterLink>
 
           </div>
 
