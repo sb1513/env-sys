@@ -2,6 +2,7 @@ import {createRouter, createWebHistory} from "vue-router";
 import Login from "../views/login/Login.vue";
 import Register from "../views/register/Register.vue";
 import Home from "../views/home/Home.vue";
+import AqiList from "../views/aqilist/AqiList.vue";
 
 const routes = [
     {
@@ -16,8 +17,14 @@ const routes = [
     },
     {
         path: '/grid/home',
-        name: 'GridHomePage-index',
+        name: 'HomePage-index',
         component: Home
+    },
+    {
+        path: '/grid/aqilist',
+        name: 'AqiListPage-index',
+        component: AqiList,
+        meta: {isLogin: true}
     },
 ]
 

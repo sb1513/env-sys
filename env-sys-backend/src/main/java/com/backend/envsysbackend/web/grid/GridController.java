@@ -1,13 +1,7 @@
 package com.backend.envsysbackend.web.grid;
 
-import com.backend.envsysbackend.entity.Grid_city;
-import com.backend.envsysbackend.entity.Grid_member;
-import com.backend.envsysbackend.entity.Grid_province;
-import com.backend.envsysbackend.entity.Supervisor;
-import com.backend.envsysbackend.service.Grid_cityService;
-import com.backend.envsysbackend.service.Grid_memberService;
-import com.backend.envsysbackend.service.Grid_provinceService;
-import com.backend.envsysbackend.service.SupervisorService;
+import com.backend.envsysbackend.entity.*;
+import com.backend.envsysbackend.service.*;
 import com.backend.envsysbackend.util.JWTutil;
 import com.backend.envsysbackend.web.R;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -31,6 +25,8 @@ public class GridController {
     private Grid_provinceService grid_provinceService;
     @Autowired
     private Grid_cityService grid_cityService;
+    @Autowired
+    private Aqi_feedbackService aqi_feedbackService;
 
     @PostMapping("/login")
     public R login(@RequestBody Map<String,Object> map){
@@ -79,5 +75,13 @@ public class GridController {
         List<Grid_city> list = grid_cityService.list(qw);
 
         return new R(2000, "获取成功", list);
+    }
+
+    @GetMapping("/aqilist")
+    public R aqilist(@RequestAttribute("gm_id") int gmId) {
+        QueryWrapper<Aqi_feedback> qw = new QueryWrapper<>();
+        qw.eq("af.gm_id", gmId);
+        List<Aqi_feedback> list = aqi_feedbackService.list(qw);
+        return new R (2000, "获取成功", list);
     }
 }
