@@ -87,8 +87,7 @@ public class SupController {
     @GetMapping("/aqidetail/{af_id}")
     public R aqidetail(@PathVariable int af_id){
         QueryWrapper<Aqi_feedback> qw = new QueryWrapper<>();
-        qw.eq("af_id",af_id);
-        Aqi_feedback aqi_feedback = aqi_feedbackService.getOne(qw);
+        Aqi_feedback aqi_feedback = aqi_feedbackService.getById(af_id);
         return new R (2000, "获取成功", aqi_feedback);
     }
 }

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.backend.envsysbackend.mapper.Aqi_feedbackMapper">
+
+    <resultMap id="BaseResultMap"
+               type="com.backend.envsysbackend.entity.Aqi_feedback">
+
+        <!-- 主键 -->
+        <id column="af_id" property="afId"/>
+
+        <!-- 基本信息 -->
+        <result column="tel_id" property="telId"/>
+        <result column="province_id" property="provinceId"/>
+        <result column="city_id" property="cityId"/>
+        <result column="address" property="address"/>
+        <result column="information" property="information"/>
+        <result column="estimated_grade" property="estimatedGrade"/>
+        <result column="af_date" property="afDate"/>
+        <result column="af_time" property="afTime"/>
+        <result column="gm_id" property="gmId"/>
+        <result column="assign_date" property="assignDate"/>
+        <result column="assign_time" property="assignTime"/>
+        <result column="state" property="state"/>
+        <result column="remarks" property="remarks"/>
+
+        <!-- 省、市名称 -->
+        <result column="province_name" property="provinceName"/>
+        <result column="city_name" property="cityName"/>
+
+    </resultMap>
+
+
+    <sql id="BASIC_SQL">
+        SELECT
+            af.*,
+            gp.province_name,
+            gc.city_name
+        FROM aqi_feedback af
+                 LEFT JOIN grid_province gp
+                           ON af.province_id = gp.province_id
+                 LEFT JOIN grid_city gc
+                           ON af.city_id = gc.city_id
+    </sql>
+
+
+    <select id="selectList" resultMap="BaseResultMap">
+        <include refid="BASIC_SQL"/>
+        ${ew.customSqlSegment}
+    </select>
+
+
+    <select id="selectOne" resultMap="BaseResultMap">
+        <include refid="BASIC_SQL"/>
+        ${ew.customSqlSegment}
+    </select>
+
+
+    <select id="selectPage" resultMap="BaseResultMap">
+        <include refid="BASIC_SQL"/>
+        ${ew.customSqlSegment}
+    </select>
+
+
+    <select id="selectById" resultMap="BaseResultMap">
+        <include refid="BASIC_SQL"/>
+        WHERE af.af_id = #{id}
+    </select>
+
+</mapper>

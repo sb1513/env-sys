@@ -11,7 +11,7 @@ const loadAqi = () => {
       url: '/supervisor/aqiquery'
     }).then(res=>{
       //alert(res.data.msg)
-      aqiQuery.value=res.data.data || []
+      aqiQuery.value=res.data.data
     }).catch(err=>{
       console.log(err)
   })
@@ -34,8 +34,8 @@ onMounted(()=>{
       <span>{{aqiquery.estimatedGrade}}</span>
       <span>{{aqiquery.afDate}}</span>
       <span>{{aqiquery.afTime}}</span>
-      <span>{{aqiquery.provinceId}}</span>
-      <span>{{aqiquery.cityId}}</span>
+      <span>{{aqiquery.provinceName}}</span>
+      <span>{{aqiquery.cityName}}</span>
     </div>
   </div>
   <RouterLink :to="{name: 'HomePage-index'}">返回</RouterLink>

@@ -35,6 +35,27 @@ public class Aqi_feedback {
     private int state;
     @TableField("remarks")
     private String remarks;
+    @TableField(exist = false)
+    private String provinceName;
+
+    public String getProvinceName() {
+        return provinceName;
+    }
+
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
+
+    @TableField(exist = false)
+    private String cityName;
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
 
     public int getAfId() {
         return afId;

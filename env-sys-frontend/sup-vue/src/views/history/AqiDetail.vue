@@ -13,7 +13,7 @@ function loadDetail(){
       method: 'get',
       url: `/supervisor/aqidetail/${id}`,
     }).then(res=>{
-      console.log(res.data.msg)
+      console.log(res.data.data)
       feedback.value=res.data.data
     }).catch(err=>{
       console.log(err)
@@ -31,8 +31,8 @@ onMounted(()=>{
     <p>反馈等级：{{ feedback.estimatedGrade }}</p>
     <p>反馈日期：{{ feedback.afDate }}</p>
     <p>反馈时间：{{ feedback.afTime }}</p>
-    <p>省份：{{ feedback.provinceId }}</p>
-    <p>城市：{{ feedback.cityId }}</p>
+    <p>省份：{{ feedback.provinceName }}</p>
+    <p>城市：{{ feedback.cityName }}</p>
     <p>地址：{{ feedback.address }}</p>
     <p>反馈信息：{{ feedback.information }}</p>
   </div>
