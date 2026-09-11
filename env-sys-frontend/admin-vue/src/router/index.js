@@ -1,6 +1,8 @@
 import { createRouter,createWebHistory} from 'vue-router';
 import Login from "../views/login/Login.vue";
 import Home from "../views/home/Home.vue";
+import AqiList from "../views/aqilist/AqiList.vue";
+import AqiDetail from "../views/aqilist/AqiDetail.vue";
 
 const routes = [
     {
@@ -12,6 +14,18 @@ const routes = [
         path: '/admin/home',
         name: 'HomePage-index',
         component: Home,
+        meta: {isLogin: true}
+    },
+    {
+        path: '/admin/aqilist',
+        name: 'AqiListPage-index',
+        component: AqiList,
+        meta: {isLogin: true}
+    },
+    {
+        path: '/admin/aqidetail/:id',
+        name: 'AqiDetailPage-index',
+        component: AqiDetail,
         meta: {isLogin: true}
     },
 ]

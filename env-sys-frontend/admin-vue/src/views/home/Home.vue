@@ -74,13 +74,14 @@ const selectMenu = (menu) => {
 
           <div v-show="publicDataOpen" class="submenu">
 
-            <div
+            <RouterLink :to="{name:'AqiListPage-index'}"
               class="menu-item"
               :class="{ active: activeMenu === 'public' }"
               @click="selectMenu('public')"
+
             >
               公众监督数据列表
-            </div>
+            </RouterLink>
 
             <div
               class="menu-item"

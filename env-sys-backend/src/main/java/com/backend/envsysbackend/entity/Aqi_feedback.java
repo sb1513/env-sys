@@ -56,6 +56,16 @@ public class Aqi_feedback {
     public void setCityName(String cityName) {
         this.cityName = cityName;
     }
+    @TableField(exist = false)
+    private String realName;
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
 
     public int getAfId() {
         return afId;

@@ -30,6 +30,9 @@
         <result column="province_name" property="provinceName"/>
         <result column="city_name" property="cityName"/>
 
+        <!-- 公众监督员姓名 -->
+        <result column="real_name" property="realName"/>
+
     </resultMap>
 
 
@@ -37,12 +40,18 @@
         SELECT
             af.*,
             gp.province_name,
-            gc.city_name
+            gc.city_name,
+            s.real_name
         FROM aqi_feedback af
+
                  LEFT JOIN grid_province gp
                            ON af.province_id = gp.province_id
+
                  LEFT JOIN grid_city gc
                            ON af.city_id = gc.city_id
+
+                 LEFT JOIN supervisor s
+                           ON af.tel_id = s.tel_id
     </sql>
 
 
