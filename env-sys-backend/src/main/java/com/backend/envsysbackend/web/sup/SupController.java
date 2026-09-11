@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -71,5 +72,23 @@ public class SupController {
         aqi_feedback.setAfTime(now.format(timeFormatter));
         aqi_feedbackService.save(aqi_feedback);
         return new R (2000, "上报成功", null);
+    }
+
+    @GetMapping("/aqiquery")
+    public R aqiquery(@RequestAttribute("tel_id") int tel_id){
+        QueryWrapper<Aqi_feedback> qw = new QueryWrapper<>();
+        qw.eq("tel_id",tel_id);
+        qw.orderByDesc("af_date");
+        qw.orderByDesc("af_time");
+        List<Aqi_feedback> aqi_feedbacks = aqi_feedbackService.list(qw);
+        return new R (2000, "获取成功", aqi_feedbacks);
+    }
+
+    @GetMapping("/aqidetail/{af_id}")
+    public R aqidetail(@PathVariable int af_id){
+        QueryWrapper<Aqi_feedback> qw = new QueryWrapper<>();
+        qw.eq("af_id",af_id);
+        Aqi_feedback aqi_feedback = aqi_feedbackService.getOne(qw);
+        return new R (2000, "获取成功", aqi_feedback);
     }
 }

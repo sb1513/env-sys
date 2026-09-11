@@ -4,6 +4,8 @@ import Home from "../views/home/Home.vue";
 import Register from "../views/register/Register.vue";
 import AqiChoose from "../views/feedback/AqiChoose.vue";
 import GridChoose from "../views/feedback/GridChoose.vue";
+import History from "../views/history/History.vue";
+import AqiDetail from "../views/history/AqiDetail.vue";
 
 const routes = [
     {
@@ -34,6 +36,18 @@ const routes = [
         component: GridChoose,
         meta: {isLogin: true},
     },
+    {
+        path: '/supervisor/aqihistory',
+        name: 'AqiHistoryPage-index',
+        component: History,
+        meta: {isLogin: true},
+    },
+    {
+        path: '/supervisor/aqidetail/:id',
+        name: 'AqiDetailPage-index',
+        component: AqiDetail,
+        meta: {isLogin: true},
+    },
 ]
 
 const router = createRouter({
@@ -46,7 +60,7 @@ router.beforeEach((to,from)=>{
       return
   }
   alert("请登录")
-  return ("/login")
+  return ("/supervisor")
 })
 
 export default router;

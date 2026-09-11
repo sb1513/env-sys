@@ -31,7 +31,7 @@ router.beforeEach((to,from)=>{
       return
   }
   alert("请登录")
-  return ("/login")
+  return ("/grid")
 })
 
 export default router;
