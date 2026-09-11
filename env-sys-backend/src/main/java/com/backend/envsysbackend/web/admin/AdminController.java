@@ -2,8 +2,10 @@ package com.backend.envsysbackend.web.admin;
 
 import com.backend.envsysbackend.entity.Admins;
 import com.backend.envsysbackend.entity.Aqi_feedback;
+import com.backend.envsysbackend.entity.Grid_member;
 import com.backend.envsysbackend.service.AdminService;
 import com.backend.envsysbackend.service.Aqi_feedbackService;
+import com.backend.envsysbackend.service.Grid_memberService;
 import com.backend.envsysbackend.util.JWTutil;
 import com.backend.envsysbackend.web.R;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -11,6 +13,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +31,9 @@ public class AdminController {
 
     @Autowired
     private Aqi_feedbackService aqi_feedbackService;
+
+    @Autowired
+    private Grid_memberService grid_memberService;
 
     @PostMapping("/login")
     public R login(@RequestBody Map<String,Object> map){
@@ -76,5 +83,44 @@ public class AdminController {
             return new R(5001, "查询失败",null);
         }
         return new R(2000, "获取成功", aqiFeedback);
+    }
+
+    @GetMapping("/gridmember/{cityId}")
+    public R points(@PathVariable Integer cityId) {
+        QueryWrapper<Grid_member> qw = new QueryWrapper<>();
+        qw.eq("city_id", cityId);
+        qw.eq("state", 0);
+        List<Grid_member> list = grid_memberService.list(qw);
+        return new R(2000, "获取成功", list);
+    }
+
+    @PostMapping("/supervisor/aqiassign")
+    public R aqiassign(@RequestBody Aqi_feedback aqiFeedback) {
+        Aqi_feedback old = aqi_feedbackService.getById(aqiFeedback.getAfId());
+
+        if (old == null) {
+            return new R(5001, "反馈不存在", null);
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+
+        DateTimeFormatter dateFormatter =
+                DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        DateTimeFormatter timeFormatter =
+                DateTimeFormatter.ofPattern("HH:mm:ss");
+
+        old.setGmId(aqiFeedback.getGmId());
+        old.setAssignDate(now.format(dateFormatter));
+        old.setAssignTime(now.format(timeFormatter));
+        old.setState(aqiFeedback.getState());
+
+        boolean success = aqi_feedbackService.updateById(old);
+
+        if (!success) {
+            return new R(5000, "指派失败", null);
+        }
+
+        return new R(2000, "指派成功", old);
     }
 }

@@ -78,6 +78,10 @@ const handleDetail = (item) => {
   router.push(`/admin/aqidetail/${item.afId}`);
 };
 
+const handleAssign = (item) => {
+  router.push(`/admin/aqiassign/${item.afId}`);
+};
+
 const getGradeText = (grade) => {
   const map = {
     1: "轻度污染 (一)",
@@ -172,6 +176,7 @@ onMounted(() => {
             <td>{{ item.afTime }}</td>
             <td>
               <button class="detail-btn" @click="handleDetail(item)">详细</button>
+              <button class="detail-btn" @click="handleAssign(item)">指派</button>
             </td>
           </tr>
           <tr v-if="aqiQuery.length === 0">

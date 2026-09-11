@@ -3,6 +3,7 @@ import Login from "../views/login/Login.vue";
 import Home from "../views/home/Home.vue";
 import AqiList from "../views/aqilist/AqiList.vue";
 import AqiDetail from "../views/aqilist/AqiDetail.vue";
+import AqiAssign from "../views/aqilist/AqiAssign.vue";
 
 const routes = [
     {
@@ -26,6 +27,12 @@ const routes = [
         path: '/admin/aqidetail/:id',
         name: 'AqiDetailPage-index',
         component: AqiDetail,
+        meta: {isLogin: true}
+    },
+    {
+        path: '/admin/aqiassign/:id',
+        name: 'AqiAssignPage-index',
+        component: AqiAssign,
         meta: {isLogin: true}
     },
 ]
