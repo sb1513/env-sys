@@ -77,7 +77,7 @@ public class SupController {
     @GetMapping("/aqiquery")
     public R aqiquery(@RequestAttribute("tel_id") int tel_id){
         QueryWrapper<Aqi_feedback> qw = new QueryWrapper<>();
-        qw.eq("tel_id",tel_id);
+        qw.eq("af.tel_id",tel_id);
         qw.orderByDesc("af_date");
         qw.orderByDesc("af_time");
         List<Aqi_feedback> aqi_feedbacks = aqi_feedbackService.list(qw);

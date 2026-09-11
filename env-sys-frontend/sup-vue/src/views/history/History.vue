@@ -5,12 +5,12 @@ import router from "../../router/index.js";
 
 const aqiQuery = ref([])
 
-const loadAqi = () => {
-  axios({
+const loadAqi = async () => {
+  await axios({
       method: 'get',
       url: '/supervisor/aqiquery'
     }).then(res=>{
-      //alert(res.data.msg)
+      console.log(res.data.msg)
       aqiQuery.value=res.data.data
     }).catch(err=>{
       console.log(err)
