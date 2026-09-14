@@ -3,9 +3,11 @@ package com.backend.envsysbackend.web.admin;
 import com.backend.envsysbackend.entity.Admins;
 import com.backend.envsysbackend.entity.Aqi_feedback;
 import com.backend.envsysbackend.entity.Grid_member;
+import com.backend.envsysbackend.entity.Statistics;
 import com.backend.envsysbackend.service.AdminService;
 import com.backend.envsysbackend.service.Aqi_feedbackService;
 import com.backend.envsysbackend.service.Grid_memberService;
+import com.backend.envsysbackend.service.StatisticsService;
 import com.backend.envsysbackend.util.JWTutil;
 import com.backend.envsysbackend.web.R;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -34,6 +36,8 @@ public class AdminController {
 
     @Autowired
     private Grid_memberService grid_memberService;
+    @Autowired
+    private StatisticsService statisticsService;
 
     @PostMapping("/login")
     public R login(@RequestBody Map<String,Object> map){
@@ -76,6 +80,24 @@ public class AdminController {
         return new R (2000, "获取成功", pg);
     }
 
+    @GetMapping("/grid/list")
+    public R gridconfirmlist(int pageNum,int pageSize,String province,String city,String feedbackDate){
+        Page<Statistics> pg = new Page<>(pageNum,pageSize);
+        QueryWrapper<Statistics> qw = new QueryWrapper<>();
+        if(province!=null&&province!=""){
+            qw.eq("gp.province_name",province);
+        }
+        if(city!=null&&city!=""){
+            qw.eq("gc.city_name",city);
+        }
+        if(feedbackDate!=null){
+            qw.eq("confirm_date",feedbackDate);
+        }
+        qw.orderByDesc("confirm_time");
+        statisticsService.page(pg,qw);
+        return new R (2000, "获取成功", pg);
+    }
+
     @GetMapping("/supervisor/aqidetail/{id}")
     public R aqidetail(@PathVariable int id) {
         Aqi_feedback aqiFeedback = aqi_feedbackService.getById(id);
@@ -83,6 +105,15 @@ public class AdminController {
             return new R(5001, "查询失败",null);
         }
         return new R(2000, "获取成功", aqiFeedback);
+    }
+
+    @GetMapping("/grid/aqidetail/{id}")
+    public R confirmaqidetail(@PathVariable int id) {
+        Statistics statistics = statisticsService.getById(id);
+        if (statistics == null) {
+            return new R(5001, "查询失败",null);
+        }
+        return new R(2000, "获取成功", statistics);
     }
 
     @GetMapping("/gridmember/{cityId}")

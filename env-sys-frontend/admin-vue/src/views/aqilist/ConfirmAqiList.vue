@@ -31,23 +31,16 @@ const loadAqi = () => {
 
   if (province.value) {
     params.append("province", province.value)
-  }
-
-  if (city.value) {
+  }if (city.value) {
     params.append("city", city.value)
-  }
-
-  if (grade.value) {
+  }if (grade.value) {
     params.append("grade", grade.value)
-  }
-
-  if (feedbackDate.value) {
+  }if (feedbackDate.value) {
     params.append("feedbackDate", feedbackDate.value)
   }
-
   axios({
     method: "get",
-    url: `/admin/supervisor/list?${params.toString()}`
+    url: `/admin/grid/list?${params.toString()}`
   }).then(res => {
     let pg = res.data.data
     aqiQuery.value = pg.records
@@ -90,7 +83,7 @@ const clearFilter = () => {
 }
 
 const handleDetail = (item) => {
-  router.push(`/admin/confirmaqidetail/${item.afId}`)
+  router.push(`/admin/confirmaqidetail/${item.id}`)
 }
 
 const getGradeText = (grade) => {
@@ -143,20 +136,7 @@ onMounted(() => {
       </div>
 
       <div class="filter-item">
-        <span>预估等级</span>
-        <select v-model="grade">
-          <option value="">-- 全部 --</option>
-          <option value="1">一级</option>
-          <option value="2">二级</option>
-          <option value="3">三级</option>
-          <option value="4">四级</option>
-          <option value="5">五级</option>
-          <option value="6">六级</option>
-        </select>
-      </div>
-
-      <div class="filter-item">
-        <span>反馈日期</span>
+        <span>确认日期</span>
         <input type="date" v-model="feedbackDate">
       </div>
 
@@ -169,12 +149,11 @@ onMounted(() => {
         <thead>
         <tr>
           <th>编号</th>
-          <th>反馈者</th>
           <th>所在省</th>
           <th>所在市</th>
           <th>AQI污染等级</th>
-          <th>指派日期</th>
-          <th>指派时间</th>
+          <th>确认日期</th>
+          <th>确认时间</th>
           <th>网格员</th>
           <th>反馈者</th>
           <th>操作</th>
@@ -186,22 +165,21 @@ onMounted(() => {
             v-for="item in aqiQuery"
             :key="item.afId"
         >
-          <td>{{ item.afId }}</td>
-          <td>{{ item.realName }}</td>
+          <td>{{ item.id }}</td>
           <td>{{ item.provinceName }}</td>
           <td>{{ item.cityName }}</td>
 
           <td>
             <span
                 class="grade"
-                :class="'grade' + item.estimatedGrade"
+                :class="'grade' + item.aqiId"
             >
-              {{ getGradeText(item.estimatedGrade) }}
+              {{ getGradeText(item.aqiId) }}
             </span>
           </td>
 
-          <td>{{ item.assignDate }}</td>
-          <td>{{ item.assignTime }}</td>
+          <td>{{ item.confirmDate }}</td>
+          <td>{{ item.confirmTime }}</td>
 
           <td>
             {{ item.gmName || "未知" }}

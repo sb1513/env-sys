@@ -42,6 +42,61 @@ public class Statistics {
     @TableField("remarks")
     private String remarks;
 
+    @TableField(exist = false)
+    private String provinceName;
+
+    @TableField(exist = false)
+    private String cityName;
+
+    @TableField(exist = false)
+    private String realName;
+
+    @TableField(exist = false)
+    private String gmName;
+
+    @TableField(exist = false)
+    private String gmTel;
+
+    public String getProvinceName() {
+        return provinceName;
+    }
+
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public String getGmName() {
+        return gmName;
+    }
+
+    public void setGmName(String gmName) {
+        this.gmName = gmName;
+    }
+
+    public String getGmTel() {
+        return gmTel;
+    }
+
+    public void setGmTel(String gmTel) {
+        this.gmTel = gmTel;
+    }
+
     public int getId() {
         return id;
     }

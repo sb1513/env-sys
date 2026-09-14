@@ -12,9 +12,10 @@ const loading = ref(true);
 const loadDetail = () => {
   axios({
     method: "get",
-    url: `/admin/supervisor/aqidetail/${route.params.id}`
+    url: `/admin/grid/aqidetail/${route.params.id}`
   }).then(res => {
     aqi.value = res.data.data;
+    console.log(res.data.msg)
   }).catch(err => {
     console.log(err);
   }).finally(() => {
@@ -72,24 +73,20 @@ onMounted(() => {
 
     <div v-else class="detail-table">
       <div class="detail-row">
-        <div class="label">反馈编号</div>
-        <div class="value">{{ aqi.afId }}</div>
+        <div class="label">确认AQI数据编号</div>
+        <div class="value">{{ aqi.id }}</div>
       </div>
 
       <div class="detail-row">
         <div class="label">公众监督员</div>
         <div class="value">
           <span class="tag">{{ aqi.realName }}</span>
+          <span class="tag">{{ aqi.fdId }}</span>
         </div>
       </div>
 
       <div class="detail-row">
-        <div class="label">联系电话</div>
-        <div class="value">{{ aqi.telId }}</div>
-      </div>
-
-      <div class="detail-row">
-        <div class="label">反馈信息所在地</div>
+        <div class="label">确认信息所在地址</div>
         <div class="value">
           <span class="tag">{{ aqi.provinceName }}</span>
           <span class="tag">{{ aqi.cityName }}</span>
@@ -98,7 +95,7 @@ onMounted(() => {
       </div>
 
       <div class="detail-row">
-        <div class="label">反馈信息描述</div>
+        <div class="label">公众监督员反馈信息描述</div>
         <div class="value">
           {{ aqi.information }}
         </div>
@@ -109,33 +106,26 @@ onMounted(() => {
         <div class="value">
           <span
             class="grade"
-            :class="'grade' + aqi.estimatedGrade"
+            :class="'grade' + aqi.aqiId"
           >
-            {{ getGradeText(aqi.estimatedGrade) }}
+            {{ getGradeText(aqi.aqiId) }}
           </span>
         </div>
       </div>
 
       <div class="detail-row">
-        <div class="label">反馈日期时间</div>
+        <div class="label">确认日期时间</div>
         <div class="value">
-          <span class="tag">{{ aqi.afDate }}</span>
-          <span class="tag">{{ aqi.afTime }}</span>
+          <span class="tag">{{ aqi.confirmDate }}</span>
+          <span class="tag">{{ aqi.confirmTime }}</span>
         </div>
       </div>
 
       <div class="detail-row">
-        <div class="label">负责网格员</div>
+        <div class="label">网格员信息</div>
         <div class="value">
           <span class="tag">{{ aqi.gmName }}</span>
           <span class="tag">{{ aqi.gmTel }}</span>
-        </div>
-      </div>
-
-      <div class="detail-row">
-        <div class="label">处理状态</div>
-        <div class="value">
-          <span class="tag">{{ getStateText(aqi.state) }}</span>
         </div>
       </div>
 
