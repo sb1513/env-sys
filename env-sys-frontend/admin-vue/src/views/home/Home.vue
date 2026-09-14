@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+const userId = JSON.parse(sessionStorage.getItem("cur_user")).userName
 
 // 左侧菜单展开/收起
 const publicDataOpen = ref(true)
@@ -38,7 +39,7 @@ const selectMenu = (menu) => {
 
       <div class="admin-info">
         <span class="admin-text">
-          系统管理员：administrator
+          系统管理员：{{ userId }}
         </span>
 
         <button class="logout-btn" @click="logout">
@@ -139,13 +140,21 @@ const selectMenu = (menu) => {
               AQI指数趋势统计
             </RouterLink>
 
-            <div
+            <RouterLink :to="{name: 'OtherStatisticsPage-index'}"
               class="menu-item"
               :class="{ active: activeMenu === 'other' }"
               @click="selectMenu('other')"
             >
               其它数据统计
-            </div>
+            </RouterLink>
+
+            <RouterLink :to="{name: 'NEPVPage-index'}"
+              class="menu-item"
+              :class="{ active: activeMenu === 'other' }"
+              @click="selectMenu('other')"
+            >
+              NEPV决策者端
+            </RouterLink>
 
           </div>
 

@@ -1,9 +1,6 @@
 package com.backend.envsysbackend.service.impl;
 
-import com.backend.envsysbackend.entity.Aqi_statistics;
-import com.backend.envsysbackend.entity.Monthly_aqistatistics;
-import com.backend.envsysbackend.entity.Province_statistics;
-import com.backend.envsysbackend.entity.Statistics;
+import com.backend.envsysbackend.entity.*;
 import com.backend.envsysbackend.mapper.StatisticsMapper;
 import com.backend.envsysbackend.service.StatisticsService;
 import com.baomidou.mybatisplus.spring.service.impl.ServiceImpl;
@@ -27,4 +24,11 @@ public class StatisticsImpl
 
     @Override
     public List<Monthly_aqistatistics> getMonthlyAqiStatistics() { return baseMapper.getMonthlyAqiStatistics(); }
+
+    @Override
+    public Other_statistics getOtherStatistics() {
+        Other_statistics data = baseMapper.getOtherStatistics();
+        data.setProvincePollution(baseMapper.getProvincePollutionStatistics());
+        return data;
+    }
 }

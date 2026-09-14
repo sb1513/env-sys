@@ -172,4 +172,15 @@ public class AdminController {
                 statisticsService.getMonthlyAqiStatistics();
         return new R(2000, "获取成功", list);
     }
+
+    @GetMapping("/otherstatistics")
+    public R otherstatistics() {
+        return new R(2000, "获取成功", null);
+    }
+
+    @GetMapping("/others")
+    public R others() {
+        Other_statistics data = statisticsService.getOtherStatistics();
+        return new R(2000, "获取成功", data);
+    }
 }

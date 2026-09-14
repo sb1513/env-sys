@@ -9,6 +9,8 @@ import ConfirmAqiDetail from "../views/aqilist/ConfirmAqiDetail.vue";
 import ProvinceStatistics from "../views/provincestatistics/ProvinceStatistics.vue";
 import AqiStatistics from "../views/aqistatistics/AqiStatistics.vue";
 import MonthlyAqi from "../views/monthlyaqi/MonthlyAqi.vue";
+import OtherStatistics from "../views/otherstatistics/OtherStatistics.vue";
+import NEPV from "../views/nepv/NEPV.vue";
 
 const routes = [
     {
@@ -68,6 +70,18 @@ const routes = [
         path: '/admin/monthlyaqi',
         name: 'MonthlyAqiPage-index',
         component: MonthlyAqi,
+        meta: {isLogin: true}
+    },
+    {
+        path: '/admin/otherstatistics',
+        name: 'OtherStatisticsPage-index',
+        component: OtherStatistics,
+        meta: {isLogin: true}
+    },
+    {
+        path: '/admin/nepv',
+        name: 'NEPVPage-index',
+        component: NEPV,
         meta: {isLogin: true}
     },
 ]

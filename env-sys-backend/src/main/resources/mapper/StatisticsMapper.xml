@@ -90,10 +90,10 @@
             gp.province_id AS province_id,
             gp.province_name AS province_name,
             gp.province_abbr AS province_abbr,
-            SUM(CASE WHEN st.so2_level > 3 THEN 1 ELSE 0 END) AS so2_count,
-            SUM(CASE WHEN st.co_level > 3 THEN 1 ELSE 0 END) AS co_count,
-            SUM(CASE WHEN st.spm_level > 3 THEN 1 ELSE 0 END) AS spm_count,
-            SUM(CASE WHEN st.aqi_id > 3 THEN 1 ELSE 0 END) AS aqi_count
+            SUM(CASE WHEN st.so2_level > 2 THEN 1 ELSE 0 END) AS so2_count,
+            SUM(CASE WHEN st.co_level > 2 THEN 1 ELSE 0 END) AS co_count,
+            SUM(CASE WHEN st.spm_level > 2 THEN 1 ELSE 0 END) AS spm_count,
+            SUM(CASE WHEN st.aqi_id > 2 THEN 1 ELSE 0 END) AS aqi_count
         FROM grid_province gp
                  LEFT JOIN statistics st
                            ON st.province_id = gp.province_id
@@ -127,6 +127,48 @@
         ORDER BY
             DATE_FORMAT(confirm_date, '%Y') DESC,
             DATE_FORMAT(confirm_date, '%m') DESC
+    </select>
+
+    <select id="getOtherStatistics" resultType="com.backend.envsysbackend.entity.Other_statistics">
+        SELECT
+            (
+                SELECT ROUND(
+                               COUNT(DISTINCT gm.city_id) * 100.0 / 34,
+                               2
+                       )
+                FROM grid_member gm
+                WHERE gm.state = 0
+            ) AS capitalCoverage,
+            (
+                SELECT ROUND(
+                               COUNT(DISTINCT gm.city_id) * 100.0 / 106,
+                               2
+                       )
+                FROM grid_member gm
+                WHERE gm.state = 0
+            ) AS bigCityCoverage,
+            COUNT(*) AS totalCount,
+            SUM(CASE WHEN aqi_id &lt;= 2 THEN 1 ELSE 0 END) AS goodCount,
+            SUM(CASE WHEN aqi_id &gt; 2 THEN 1 ELSE 0 END) AS pollutionCount
+        FROM statistics
+    </select>
+
+    <select id="getProvincePollutionStatistics" resultType="com.backend.envsysbackend.entity.ProvincePollutionStatistics">
+        SELECT
+            gp.province_id AS province_id,
+            gp.province_name AS province_name,
+            COUNT(st.id) AS total_count,
+            SUM(CASE WHEN st.aqi_id > 2 THEN 1 ELSE 0 END) AS pollution_count,
+            ROUND(
+                    SUM(CASE WHEN st.aqi_id > 2 THEN 1 ELSE 0 END) * 100.0 /
+                    NULLIF(COUNT(st.id), 0),
+                    2
+            ) AS pollution_rate
+        FROM grid_province gp
+                 LEFT JOIN statistics st
+                           ON gp.province_id = st.province_id
+        GROUP BY gp.province_id, gp.province_name
+        ORDER BY gp.province_id ASC
     </select>
 
 </mapper>
