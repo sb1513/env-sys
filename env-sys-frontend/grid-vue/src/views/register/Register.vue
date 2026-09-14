@@ -81,7 +81,7 @@ function send(){
     }).then(res=>{
       alert(res.data.msg)
       //errMessage.value=res.data.msg
-      router.push({name: "GridHomePage-index"})
+      router.push({name: "HomePage-index"})
     })
   }
   //console.log(errMessage)

@@ -66,6 +66,7 @@ public class Aqi_feedback {
     public void setRealName(String realName) {
         this.realName = realName;
     }
+    @TableField(exist = false)
     private String gmName;
 
     public String getGmName() {
@@ -75,6 +76,7 @@ public class Aqi_feedback {
     public void setGmName(String gmName) {
         this.gmName = gmName;
     }
+    @TableField(exist = false)
     private String gmTel;
 
     public String getGmTel() {

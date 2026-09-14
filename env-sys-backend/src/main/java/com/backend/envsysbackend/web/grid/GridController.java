@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +29,10 @@ public class GridController {
     private Grid_cityService grid_cityService;
     @Autowired
     private Aqi_feedbackService aqi_feedbackService;
+    @Autowired
+    private AqiService aqiService;
+    @Autowired
+    private StatisticsService statisticsService;
 
     @PostMapping("/login")
     public R login(@RequestBody Map<String,Object> map){
@@ -77,11 +83,44 @@ public class GridController {
         return new R(2000, "获取成功", list);
     }
 
+    @GetMapping("/aqistandard")
+    public R aqistandard() {
+        List<Aqi> list = aqiService.list();
+        return new R (2000, "获取成功", list);
+    }
+
     @GetMapping("/aqilist")
     public R aqilist(@RequestAttribute("gm_id") int gmId) {
         QueryWrapper<Aqi_feedback> qw = new QueryWrapper<>();
         qw.eq("af.gm_id", gmId);
+        qw.eq("status","1");
         List<Aqi_feedback> list = aqi_feedbackService.list(qw);
         return new R (2000, "获取成功", list);
+    }
+
+    @GetMapping("/aqidetail/{af_id}")
+    public R aqidetail(@PathVariable int af_id) {
+        QueryWrapper<Aqi_feedback> qw = new QueryWrapper<>();
+        qw.eq("af.af_id", af_id);
+        List<Aqi_feedback> list = aqi_feedbackService.list(qw);
+        return new R (2000, "获取成功", list.get(0));
+    }
+
+    @PostMapping("/postaqi/{af_id}")
+    public R postaqi(@PathVariable int af_id, @RequestBody Statistics statistics) {
+        LocalDateTime now = LocalDateTime.now();
+
+        DateTimeFormatter dateFormatter =
+                DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        DateTimeFormatter timeFormatter =
+                DateTimeFormatter.ofPattern("HH:mm:ss");
+        statistics.setConfirmDate(now.format(dateFormatter));
+        statistics.setConfirmTime(now.format(timeFormatter));
+        statisticsService.save(statistics);
+        Aqi_feedback aqi_feedback = aqi_feedbackService.getById(af_id);
+        aqi_feedback.setState(2);
+        aqi_feedbackService.updateById(aqi_feedback);
+        return new R (2000, "检测成功", null);
     }
 }

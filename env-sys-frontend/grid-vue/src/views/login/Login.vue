@@ -33,7 +33,7 @@ function send(){
       let token = res.data.data.token
       sessionStorage.setItem("cur_user",JSON.stringify(user))
       sessionStorage.setItem("token",token)
-      router.push({name: "GridHomePage-index"})
+      router.push({name: "HomePage-index"})
     })
   }
   //console.log(errMessage)

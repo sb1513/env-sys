@@ -1,15 +1,17 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from "../../axios/index.js";
+import {useRouter} from "vue-router";
 
 const feedbackList = ref([]);
+const router = useRouter()
 
 function getAqiList(){
   axios({
     method: 'get',
     url: `/grid/aqilist`
   }).then(res=>{
-    feedbackList.value=res.data.data
+    feedbackList.value=res.data.data || []
     //console.log(res.data.msg)
   })
 }
@@ -44,9 +46,8 @@ const getGradeText = (grade) => {
   return texts[grade] || '';
 };
 
-// 点击“去检测”按钮的处理逻辑
 const handleGoDetect = (item) => {
-
+  router.push(`/grid/aqidetect/${item.afId}`)
 };
 </script>
 <template>
