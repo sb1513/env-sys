@@ -90,10 +90,10 @@
             gp.province_id AS province_id,
             gp.province_name AS province_name,
             gp.province_abbr AS province_abbr,
-            SUM(CASE WHEN st.so2_level > 5 THEN 1 ELSE 0 END) AS so2_count,
-            SUM(CASE WHEN st.co_level > 5 THEN 1 ELSE 0 END) AS co_count,
-            SUM(CASE WHEN st.spm_level > 5 THEN 1 ELSE 0 END) AS spm_count,
-            SUM(CASE WHEN st.aqi_id > 5 THEN 1 ELSE 0 END) AS aqi_count
+            SUM(CASE WHEN st.so2_level > 3 THEN 1 ELSE 0 END) AS so2_count,
+            SUM(CASE WHEN st.co_level > 3 THEN 1 ELSE 0 END) AS co_count,
+            SUM(CASE WHEN st.spm_level > 3 THEN 1 ELSE 0 END) AS spm_count,
+            SUM(CASE WHEN st.aqi_id > 3 THEN 1 ELSE 0 END) AS aqi_count
         FROM grid_province gp
                  LEFT JOIN statistics st
                            ON st.province_id = gp.province_id
@@ -111,6 +111,22 @@
                  LEFT JOIN statistics st ON st.aqi_id = aqi.aqi_id
         GROUP BY aqi.aqi_id, aqi.aqi_explain
         ORDER BY aqi.aqi_id ASC
+    </select>
+
+    <select id="getMonthlyAqiStatistics"
+            resultType="com.backend.envsysbackend.entity.Monthly_aqistatistics">
+        SELECT
+            DATE_FORMAT(confirm_date, '%Y') AS year,
+        DATE_FORMAT(confirm_date, '%m') AS month,
+        COUNT(*) AS aqi_count
+        FROM statistics
+        WHERE aqi_id > 3
+        GROUP BY
+            DATE_FORMAT(confirm_date, '%Y'),
+            DATE_FORMAT(confirm_date, '%m')
+        ORDER BY
+            DATE_FORMAT(confirm_date, '%Y') DESC,
+            DATE_FORMAT(confirm_date, '%m') DESC
     </select>
 
 </mapper>

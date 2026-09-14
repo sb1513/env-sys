@@ -131,13 +131,13 @@ const selectMenu = (menu) => {
               AQI指数分布统计
             </RouterLink>
 
-            <div
+            <RouterLink :to="{name: 'MonthlyAqiPage-index'}"
               class="menu-item"
               :class="{ active: activeMenu === 'trend' }"
               @click="selectMenu('trend')"
             >
               AQI指数趋势统计
-            </div>
+            </RouterLink>
 
             <div
               class="menu-item"

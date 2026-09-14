@@ -165,4 +165,11 @@ public class AdminController {
                 statisticsService.selectAqiStatistics();
         return new R(2000, "获取成功", list);
     }
+
+    @GetMapping("/monthlyaqi")
+    public R monthlyaqi() {
+        List<Monthly_aqistatistics> list =
+                statisticsService.getMonthlyAqiStatistics();
+        return new R(2000, "获取成功", list);
+    }
 }
