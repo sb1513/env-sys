@@ -1,5 +1,6 @@
 package com.backend.envsysbackend.service.impl;
 
+import com.backend.envsysbackend.entity.Aqi_statistics;
 import com.backend.envsysbackend.entity.Province_statistics;
 import com.backend.envsysbackend.entity.Statistics;
 import com.backend.envsysbackend.mapper.StatisticsMapper;
@@ -16,5 +17,10 @@ public class StatisticsImpl
     @Override
     public List<Province_statistics> selectProvinceStatistics() {
         return baseMapper.selectProvinceStatistics();
+    }
+
+    @Override
+    public List<Aqi_statistics> selectAqiStatistics() {
+        return baseMapper.selectAqiStatistics();
     }
 }

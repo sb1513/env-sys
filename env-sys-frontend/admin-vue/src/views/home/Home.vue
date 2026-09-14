@@ -123,13 +123,13 @@ const selectMenu = (menu) => {
               省分组检查统计
             </RouterLink>
 
-            <div
+            <RouterLink :to="{name: 'AqiStatisticsPage-index'}"
               class="menu-item"
               :class="{ active: activeMenu === 'distribution' }"
               @click="selectMenu('distribution')"
             >
               AQI指数分布统计
-            </div>
+            </RouterLink>
 
             <div
               class="menu-item"

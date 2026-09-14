@@ -7,6 +7,7 @@ import AqiAssign from "../views/aqilist/AqiAssign.vue";
 import ConfirmAqiList from "../views/aqilist/ConfirmAqiList.vue";
 import ConfirmAqiDetail from "../views/aqilist/ConfirmAqiDetail.vue";
 import ProvinceStatistics from "../views/provincestatistics/ProvinceStatistics.vue";
+import AqiStatistics from "../views/aqistatistics/AqiStatistics.vue";
 
 const routes = [
     {
@@ -54,6 +55,12 @@ const routes = [
         path: '/admin/provincestatistics',
         name: 'ProvinceStatisticsPage-index',
         component: ProvinceStatistics,
+        meta: {isLogin: true}
+    },
+    {
+        path: '/admin/aqistatistics',
+        name: 'AqiStatisticsPage-index',
+        component: AqiStatistics,
         meta: {isLogin: true}
     },
 ]

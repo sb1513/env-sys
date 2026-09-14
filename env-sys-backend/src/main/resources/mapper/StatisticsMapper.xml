@@ -94,11 +94,23 @@
             SUM(CASE WHEN st.co_level > 5 THEN 1 ELSE 0 END) AS co_count,
             SUM(CASE WHEN st.spm_level > 5 THEN 1 ELSE 0 END) AS spm_count,
             SUM(CASE WHEN st.aqi_id > 5 THEN 1 ELSE 0 END) AS aqi_count
-        FROM statistics st
-                 LEFT JOIN grid_province gp
+        FROM grid_province gp
+                 LEFT JOIN statistics st
                            ON st.province_id = gp.province_id
         GROUP BY gp.province_id, gp.province_name, gp.province_abbr
-        ORDER BY gp.province_id
+        ORDER BY gp.province_id ASC
+    </select>
+
+    <select id="selectAqiStatistics"
+            resultType="com.backend.envsysbackend.entity.Aqi_statistics">
+        SELECT
+            aqi.aqi_id AS aqi_id,
+            aqi.aqi_explain AS aqi_explain,
+            COUNT(st.aqi_id) AS aqi_count
+        FROM aqi aqi
+                 LEFT JOIN statistics st ON st.aqi_id = aqi.aqi_id
+        GROUP BY aqi.aqi_id, aqi.aqi_explain
+        ORDER BY aqi.aqi_id ASC
     </select>
 
 </mapper>

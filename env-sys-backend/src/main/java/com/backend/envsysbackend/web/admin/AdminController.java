@@ -156,7 +156,13 @@ public class AdminController {
     public R provinceStatistics() {
         List<Province_statistics> list =
                 statisticsService.selectProvinceStatistics();
+        return new R(2000, "获取成功", list);
+    }
 
+    @GetMapping("/aqistatistics")
+    public R aqistatistics() {
+        List<Aqi_statistics> list =
+                statisticsService.selectAqiStatistics();
         return new R(2000, "获取成功", list);
     }
 }
