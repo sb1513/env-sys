@@ -93,7 +93,7 @@ public class GridController {
     public R aqilist(@RequestAttribute("gm_id") int gmId) {
         QueryWrapper<Aqi_feedback> qw = new QueryWrapper<>();
         qw.eq("af.gm_id", gmId);
-        qw.eq("status","1");
+        qw.eq("af.state", 1);
         List<Aqi_feedback> list = aqi_feedbackService.list(qw);
         return new R (2000, "获取成功", list);
     }
