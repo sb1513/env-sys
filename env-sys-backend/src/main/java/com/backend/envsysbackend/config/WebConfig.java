@@ -16,8 +16,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(jwtInterceptorSupervisor).addPathPatterns("/supervisor/aqiquery","/supervisor/aqifeedback");
-        registry.addInterceptor(jwtInterceptorGrid).addPathPatterns("/grid/aqilist","/grid/aqidetail");
+        registry.addInterceptor(jwtInterceptorSupervisor).addPathPatterns("/supervisor/aqiquery","/supervisor/aqifeedback").order(1);
+        registry.addInterceptor(jwtInterceptorGrid).addPathPatterns("/grid/aqilist","/grid/aqidetail").order(2);
     }
 
 }

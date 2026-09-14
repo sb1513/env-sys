@@ -84,4 +84,21 @@
         WHERE st.id = #{id}
     </select>
 
+    <select id="selectProvinceStatistics"
+            resultType="com.backend.envsysbackend.entity.Province_statistics">
+        SELECT
+            gp.province_id AS province_id,
+            gp.province_name AS province_name,
+            gp.province_abbr AS province_abbr,
+            SUM(CASE WHEN st.so2_level > 5 THEN 1 ELSE 0 END) AS so2_count,
+            SUM(CASE WHEN st.co_level > 5 THEN 1 ELSE 0 END) AS co_count,
+            SUM(CASE WHEN st.spm_level > 5 THEN 1 ELSE 0 END) AS spm_count,
+            SUM(CASE WHEN st.aqi_id > 5 THEN 1 ELSE 0 END) AS aqi_count
+        FROM statistics st
+                 LEFT JOIN grid_province gp
+                           ON st.province_id = gp.province_id
+        GROUP BY gp.province_id, gp.province_name, gp.province_abbr
+        ORDER BY gp.province_id
+    </select>
+
 </mapper>

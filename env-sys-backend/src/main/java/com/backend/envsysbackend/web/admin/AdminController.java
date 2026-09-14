@@ -1,9 +1,6 @@
 package com.backend.envsysbackend.web.admin;
 
-import com.backend.envsysbackend.entity.Admins;
-import com.backend.envsysbackend.entity.Aqi_feedback;
-import com.backend.envsysbackend.entity.Grid_member;
-import com.backend.envsysbackend.entity.Statistics;
+import com.backend.envsysbackend.entity.*;
 import com.backend.envsysbackend.service.AdminService;
 import com.backend.envsysbackend.service.Aqi_feedbackService;
 import com.backend.envsysbackend.service.Grid_memberService;
@@ -153,5 +150,13 @@ public class AdminController {
         }
 
         return new R(2000, "指派成功", old);
+    }
+
+    @GetMapping("/provincestatistics")
+    public R provinceStatistics() {
+        List<Province_statistics> list =
+                statisticsService.selectProvinceStatistics();
+
+        return new R(2000, "获取成功", list);
     }
 }

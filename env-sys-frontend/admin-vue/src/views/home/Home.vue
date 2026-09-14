@@ -115,13 +115,13 @@ const selectMenu = (menu) => {
 
           <div v-show="statisticsOpen" class="submenu">
 
-            <div
+            <RouterLink :to="{name: 'ProvinceStatisticsPage-index'}"
               class="menu-item"
               :class="{ active: activeMenu === 'province' }"
               @click="selectMenu('province')"
             >
               省分组检查统计
-            </div>
+            </RouterLink>
 
             <div
               class="menu-item"
