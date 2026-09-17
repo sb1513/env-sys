@@ -50,21 +50,13 @@ const handleGoDetect = (item) => {
   router.push(`/grid/aqidetect/${item.afId}`)
 };
 </script>
+
 <template>
   <div class="feedback-list-container">
     <!-- 遍历反馈列表 -->
-    <div
-      v-for="item in feedbackList"
-      :key="item.afId"
-      class="feedback-card"
-    >
+    <div v-for="item in feedbackList" :key="item.afId" class="feedback-card">
       <!-- 左侧等级图标 -->
-      <div
-        class="grade-icon"
-        :style="{ backgroundColor: getGradeColor(item.estimatedGrade) }"
-      >
-        {{ getGradeText(item.estimatedGrade) }}
-      </div>
+      <div class="grade-icon" :style="{ backgroundColor: getGradeColor(item.estimatedGrade) }">{{ getGradeText(item.estimatedGrade) }}</div>
 
       <!-- 中间信息区域 -->
       <div class="info-content">
@@ -72,135 +64,38 @@ const handleGoDetect = (item) => {
           <span class="location">{{ item.provinceName }} {{ item.cityName }}</span>
           <span class="date">{{ item.afDate }}</span>
         </div>
-        <div class="info-address">
-          {{ item.address }}
-        </div>
+        <div class="info-address">{{ item.address }}</div>
       </div>
 
       <!-- 右侧按钮 -->
       <div class="action-btn">
         <button @click="handleGoDetect(item)">
           去检测
-          <!-- 简单的图标 SVG -->
-          <svg class="icon" viewBox="0 0 1024 1024" width="14" height="14">
-            <path d="M512 85.333333c-235.648 0-426.666667 191.018667-426.666667 426.666667s191.018667 426.666667 426.666667 426.666667 426.666667-191.018667 426.666667-426.666667-191.018667-426.666667-426.666667-426.666667z m0 768c-188.586667 0-341.333333-152.746667-341.333333-341.333333s152.746667-341.333333 341.333333-341.333333 341.333333 152.746667 341.333333 341.333333-152.746667 341.333333-341.333333 341.333333z" fill="#409eff"/>
-            <path d="M512 256c-23.552 0-42.666667 19.114667-42.666667 42.666667v213.333333c0 23.552 19.114667 42.666667 42.666667 42.666667s42.666667-19.114667 42.666667-42.666667v-213.333333c0-23.552-19.114667-42.666667-42.666667-42.666667z" fill="#409eff"/>
-          </svg>
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path></svg>
         </button>
       </div>
     </div>
 
     <!-- 空状态提示 -->
-    <div v-if="feedbackList.length === 0" class="empty-state">
-      暂无反馈任务
-    </div>
-    <RouterLink :to="{name: 'HomePage-index'}">返回</RouterLink>
+    <div v-if="feedbackList.length === 0" class="empty-state">暂无反馈任务</div>
+    <RouterLink class="back-link" :to="{name: 'HomePage-index'}">返回</RouterLink>
   </div>
 </template>
 
 <style scoped>
-.feedback-list-container {
-  padding: 10px;
-  background-color: #f5f5f5;
-  min-height: 100vh;
-}
-
-.feedback-card {
-  display: flex;
-  align-items: center;
-  background-color: #ffffff;
-  border-radius: 4px;
-  margin-bottom: 10px;
-  padding: 15px 10px;
-  /* 模仿截图中卡片下方的虚线分割效果，如果是独立卡片可去掉 border-bottom */
-  border-bottom: 1px dashed #e0e0e0;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-
-/* 左侧等级图标样式 */
-.grade-icon {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-  font-size: 18px;
-  font-weight: bold;
-  border-radius: 4px;
-  margin-right: 12px;
-  flex-shrink: 0;
-}
-
-/* 中间信息区域样式 */
-.info-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  overflow: hidden; /* 防止文字溢出 */
-}
-
-.info-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 6px;
-  font-size: 16px;
-  color: #333;
-  font-weight: 500;
-}
-
-.location {
-  margin-right: 8px;
-}
-
-.date {
-  color: #666;
-  font-size: 14px;
-  font-weight: normal;
-}
-
-.info-address {
-  font-size: 13px;
-  color: #666;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* 右侧按钮样式 */
-.action-btn {
-  margin-left: 10px;
-  flex-shrink: 0;
-}
-
-.action-btn button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  background-color: #e6f1fc; /* 浅蓝色背景 */
-  color: #409eff;           /* 蓝色文字 */
-  border: 1px solid #b3d8ff;
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.action-btn button:hover {
-  background-color: #409eff;
-  color: #fff;
-}
-
-.action-btn button:hover .icon path {
-  fill: #fff; /* 悬停时图标变白 */
-}
-
-.empty-state {
-  text-align: center;
-  color: #999;
-  padding: 20px;
-}
+.feedback-list-container { padding: 15px; background-color: #eef7f8; min-height: 100vh; box-sizing: border-box; font-family: sans-serif; }
+.feedback-card { display: flex; align-items: center; padding: 15px 0; border-bottom: 1px dashed #b0bec5; }
+.grade-icon { width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; color: #fff; font-size: 18px; font-weight: bold; border-radius: 4px; margin-right: 12px; flex-shrink: 0; }
+.info-content { flex: 1; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+.info-header { display: flex; align-items: center; margin-bottom: 4px; font-size: 15px; color: #333; font-weight: bold; }
+.location { margin-right: 10px; }
+.date { color: #5d6b6a; font-size: 14px; font-weight: normal; }
+.info-address { font-size: 13px; color: #5d6b6a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.action-btn { margin-left: 10px; flex-shrink: 0; }
+.action-btn button { display: flex; align-items: center; justify-content: center; gap: 4px; background-color: #e6f1fc; color: #409eff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: all 0.2s; }
+.action-btn button:hover { background-color: #409eff; color: #fff; }
+.icon { width: 14px; height: 14px; flex-shrink: 0; }
+.empty-state { text-align: center; color: #9eaaab; padding: 20px; font-size: 14px; }
+.back-link { display: block; text-align: center; margin-top: 20px; color: #78909c; font-size: 14px; text-decoration: none; }
+.back-link:hover { color: #4caf50; text-decoration: underline; }
 </style>
