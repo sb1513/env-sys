@@ -13,6 +13,7 @@ const bar1Ref = ref(null);
 const bar2Ref = ref(null);
 const bar3Ref = ref(null);
 const aqiData = ref([])
+const monthlyAqiData = ref([])
 
 const router = useRouter();
 let charts = [];
@@ -51,6 +52,16 @@ const getAqiStatistics = async () => {
   })
 }
 
+const getMonthlyAqiStatistics = async () => {
+  await axios({
+    method: 'get',
+    url: '/admin/monthlyaqi'
+  }).then(res => {
+    monthlyAqiData.value = res.data.data || []
+    console.log('月度AQI数据:', monthlyAqiData.value)
+  })
+}
+
 const getProvinceStatistics = async () => {
   await axios({
     method: 'get',
@@ -60,43 +71,6 @@ const getProvinceStatistics = async () => {
     console.log(res.data.data)
   })
 }
-
-const provinceNameMap = {
-  '北京市': '北京',
-  '天津市': '天津',
-  '河北省': '河北',
-  '山西省': '山西',
-  '内蒙古自治区': '内蒙古',
-  '辽宁省': '辽宁',
-  '吉林省': '吉林',
-  '黑龙江省': '黑龙江',
-  '上海市': '上海',
-  '江苏省': '江苏',
-  '浙江省': '浙江',
-  '安徽省': '安徽',
-  '福建省': '福建',
-  '江西省': '江西',
-  '山东省': '山东',
-  '河南省': '河南',
-  '湖北省': '湖北',
-  '湖南省': '湖南',
-  '广东省': '广东',
-  '广西壮族自治区': '广西',
-  '海南省': '海南',
-  '重庆市': '重庆',
-  '四川省': '四川',
-  '贵州省': '贵州',
-  '云南省': '云南',
-  '西藏自治区': '西藏',
-  '陕西省': '陕西',
-  '甘肃省': '甘肃',
-  '青海省': '青海',
-  '宁夏回族自治区': '宁夏',
-  '新疆维吾尔自治区': '新疆',
-  '台湾省': '台湾',
-  '香港特别行政区': '香港',
-  '澳门特别行政区': '澳门'
-};
 
 const initCharts = async () => {
   const gauge1 = echarts.init(gauge1Ref.value);
@@ -210,26 +184,87 @@ const initCharts = async () => {
   charts.push(pie);
 
   const line = echarts.init(lineRef.value);
+
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth() + 1;
+
+  const last12Months = [];
+
+  for (let i = 11; i >= 0; i--) {
+    const date = new Date(currentYear, currentMonth - 1 - i, 1);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+
+    last12Months.push({
+      year: String(year),
+      month,
+      label: month
+    });
+  }
+
+  const lineData = last12Months.map(item => {
+    const found = monthlyAqiData.value.find(
+      data => String(data.year) === item.year &&
+              String(data.month).padStart(2, '0') === item.month
+    );
+
+    return found ? Number(found.aqiCount) : 0;
+  });
+
+  const lineLabels = last12Months.map(item => item.label);
+
   line.setOption({
-    grid: { top: 20, right: 20, bottom: 20, left: 30 },
+    grid: {
+      top: 20,
+      right: 20,
+      bottom: 20,
+      left: 30
+    },
+    tooltip: {
+      trigger: 'axis',
+      formatter: params => {
+        const index = params[0].dataIndex;
+        const item = last12Months[index];
+        return `${item.year}年${Number(item.month)}月<br/>AQI超标：${params[0].value}次`;
+      }
+    },
     xAxis: {
       type: 'category',
-      data: ['10', '11', '12', '01', '02', '03', '04', '05', '06', '07', '08', '09'],
-      axisLabel: { color: '#fff' }
+      data: lineLabels,
+      axisLabel: {
+        color: '#fff'
+      }
     },
     yAxis: {
       type: 'value',
-      axisLabel: { color: '#fff' },
-      splitLine: { lineStyle: { color: '#333' } }
+      min: 0,
+      axisLabel: {
+        color: '#fff'
+      },
+      splitLine: {
+        lineStyle: {
+          color: '#333'
+        }
+      }
     },
     series: [{
-      data: [0, 0, 0, 1, 3, 2, 4, 3, 4, 3, 4, 6],
+      name: 'AQI超标',
+      data: lineData,
       type: 'line',
       smooth: true,
-      lineStyle: { color: '#00bfff' },
-      itemStyle: { color: '#00bfff' }
+      lineStyle: {
+        color: '#00bfff'
+      },
+      itemStyle: {
+        color: '#00bfff'
+      },
+      areaStyle: {
+        color: 'rgba(0, 191, 255, 0.08)'
+      }
     }]
   });
+
   charts.push(line);
 
   const response = await fetch('/chinaMap.geojson');
@@ -241,9 +276,11 @@ const initCharts = async () => {
   echarts.registerMap('china', chinaMapJson);
   const map = echarts.init(mapRef.value);
   const mapData = provinceStatistics.value.map(item => ({
-    name: provinceNameMap[item.provinceName] || item.provinceName,
-    value: Number(item.aqiCount) || 0
+    name: item.provinceName,
+    value: item.aqiCount
   }));
+
+  //console.log('地图数据:', mapData);
 
   map.setOption({
     tooltip: {
@@ -388,6 +425,7 @@ onMounted(async () => {
   await nextTick();
   await getDashboardData();
   await getAqiStatistics()
+  await getMonthlyAqiStatistics();
   await getProvinceStatistics()
   await initCharts();
   window.addEventListener('resize', handleResize);
